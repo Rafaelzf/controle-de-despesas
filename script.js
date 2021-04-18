@@ -96,15 +96,18 @@ const handleFromSubmit = event => {
 
     if (IsSomeInputEmpty) {
         alert("Por favor, preencha tanto o nome quanto o valor da transação");
-        return;
+        throw new Error("Tantativa de envio com campo vazio.")
     }
 
-    addTransactionArray(transactionName, transactionAmount);
+    try {
+        addTransactionArray(transactionName, transactionAmount);
+        init();
+        updateLocalStorage();
+        cleanInputs();
+    } catch (error) {
+        console.error(error);
+    }
 
-
-    init();
-    updateLocalStorage();
-    cleanInputs();
 }
 
 form.addEventListener("submit", handleFromSubmit);
